@@ -13,6 +13,6 @@
     "body-parser": "*",
     "dotenv": "*",
     "cli-table3": "*",
-    "@11labs/sdk": "*" // Added ElevenLabs SDK
+    "elevenlabs-node": "*"
   }
 }
