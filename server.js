@@ -26,8 +26,8 @@ const elevenLabsVoiceId = process.env.ELEVENLABS_VOICE_ID; // Get from environme
 
 const elevenLabs = new ElevenLabs({
     apiKey: elevenLabsApiKey
-
-    
+      
+  
 function trackPerformance(category, executionTime) {
     if (!performanceMetrics[category]) {
         performanceMetrics[category] = []; // Initialize if it doesn't exist
