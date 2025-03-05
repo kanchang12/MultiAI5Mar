@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MultipleAI Solutions</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #f4f6f9;
+            --text-color: #2c3e50;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 380px;
+            overflow: hidden;
+            max-height: 600px;
+        }
+
+        .tabs {
+            display: flex;
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .tab i {
+            font-size: 18px;
+        }
+
+        .tab:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .tab.active {
+            background-color: rgba(255,255,255,0.1);
+            border-bottom: 3px solid var(--white);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Chat Section */
+        .chat-messages {
+            height: 400px;
+            overflow-y: auto;
+            background-color: #f9f9fc;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            max-width: 80%;
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            clear: both;
+        }
+
+        .bot-message {
+            background-color: #e6f2ff;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .user-message {
+            background-color: var(--primary-color);
+            color: var(--white);
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+            margin-left: auto;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            background-color: var(--white);
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            margin-right: 10px;
+        }
+
+        .send-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .send-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Call Section */
+        .call-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .call-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .call-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .call-btn {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .call-btn:hover {
+            background-color: #27ae60;
+        }
+
+        .call-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" data-tab="chat" aria-label="Chat">
+                <i class="fas fa-comment-dots"></i>
+                Chat
+            </div>
+            <div class="tab" data-tab="call" aria-label="Call">
+                <i class="fas fa-phone"></i>
+                Call
+            </div>
+        </div>
+
+        <div id="chatTab" class="tab-content active">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    Hi there! 👋 I'm Mat from MultipleAI Solutions. How can I help you today?
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" class="message-input" id="messageInput" placeholder="Type your message..." aria-label="Type your message">
+                <button class="send-btn" id="sendMessage" aria-label="Send Message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="callTab" class="tab-content">
+            <div class="call-section">
+                <h3>Initiate a Call</h3>
+                <div class="call-input">
+                    <input type="tel" id="phoneNumber" placeholder="Enter phone number" required aria-label="Phone number">
+                    <button class="call-btn" id="callBtn" aria-label="Initiate Call">
+                        <i class="fas fa-phone"></i> Call
+                    </button>
+                </div>
+                <p style="font-size: 0.8em; color: #7f8c8d; text-align: center;">
+                    Enter your phone number to receive a call
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Switching
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+
+                // Update active tab
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Show corresponding tab content
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === `${tabId}Tab`) {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // Chat Functionality (Using async/await for better readability)
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendMessage = document.getElementById('sendMessage');
+
+        async function sendMessageToServer() {
+            const userMessage = messageInput.value.trim();
+            if (userMessage) {
+                appendMessage(userMessage, 'user-message');
+                messageInput.value = '';
+
+                const loadingId = 'loading-' + Date.now();
+                appendMessage('Thinking...', 'bot-message', loadingId);
+                
+                try {
+                    const response = await fetch('/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `message=${encodeURIComponent(userMessage)}`,
+                    });
+                    const data = await response.json();
+                    const loadingElement = document.getElementById(loadingId);
+                    if (loadingElement) {
+                        chatMessages.removeChild(loadingElement);
+                    }
+                    appendMessageWithHTML(data.response, 'bot-message');
+                } catch (error) {
+                    console.error('Error:', error);
+                    const loadingElement = document.getElementById(loadingId);
+                    if (loadingElement) {
+                        chatMessages.removeChild(loadingElement);
+                    }
+                    appendMessage('Sorry, there was an error processing your request.', 'bot-message');
+                }
+            }
+        }
+
+        sendMessage.addEventListener('click', sendMessageToServer);
+        messageInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                sendMessageToServer();
+            }
+        });
+
+        function appendMessage(message, className, id = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${className}`;
+            messageDiv.textContent = message;
+            if (id) {
+                messageDiv.id = id;
+            }
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function appendMessageWithHTML(message, className, id = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${className}`;
+            messageDiv.innerHTML = message;
+            if (id) {
+                messageDiv.id = id;
+            }
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Call Functionality with better error handling
+        const callForm = document.getElementById('callBtn');
+        const phoneNumberInput = document.getElementById('phoneNumber');
+
+        callForm.addEventListener('click', async function(e) {
+            const phoneNumber = phoneNumberInput.value.trim();
+            if (phoneNumber) {
+                callForm.disabled = true;
+                callForm.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calling...';
+                
+                try {
+                    const response = await fetch('/call', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `phone_number=${encodeURIComponent(phoneNumber)}`,
+                    });
+                    const data = await response.json();
+                    callForm.disabled = false;
+                    callForm.innerHTML = '<i class="fas fa-phone"></i> Call';
+                    
+                    if (data.error) {
+                        alert('Error: ' + data.error);
+                    } else {
+                        alert('Call initiated successfully!');
+                        appendMessage(`Call initiated to ${phoneNumber}. You should receive it shortly.`, 'bot-message');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    callForm.disabled = false;
+                    callForm.innerHTML = '<i class="fas fa-phone"></i> Call';
+                    alert('Error initiating the call. Please try again later.');
+                }
+            } else {
+                alert('Please enter a valid phone number.');
+            }
+        });
+    </script>
+</body>
+</html>
