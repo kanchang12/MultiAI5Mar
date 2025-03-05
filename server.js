@@ -6,7 +6,7 @@ const path = require('path');
 const fs = require('fs');
 const { performance } = require('perf_hooks');
 const Table = require('cli-table3');
-const { ElevenLabs } = require('@11labs/sdk');
+const ElevenLabs = require('elevenlabs-node');
 
 
 const app = express();
@@ -25,9 +25,9 @@ const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY; // Get from environment
 const elevenLabsVoiceId = process.env.ELEVENLABS_VOICE_ID; // Get from environment variables
 
 const elevenLabs = new ElevenLabs({
-    apiKey: elevenLabsApiKey })
-      
-  
+    apiKey: elevenLabsApiKey
+
+    
 function trackPerformance(category, executionTime) {
     if (!performanceMetrics[category]) {
         performanceMetrics[category] = []; // Initialize if it doesn't exist
