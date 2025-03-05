@@ -22,7 +22,7 @@ const performanceMetrics = {
 
 
 const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY; // Get from environment variables
-const elevenLabsVoiceId = process.env.ELEVENLABS_VOICE_ID; // Get from environment variables
+const elevenLabsVoiceId = 'OYTbf65OHHFELVut7v2H'; // Get from environment variables
 
 const elevenLabs = new ElevenLabs({
     apiKey: elevenLabsApiKey})
