@@ -25,7 +25,7 @@ const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY; // Get from environment
 const elevenLabsVoiceId = process.env.ELEVENLABS_VOICE_ID; // Get from environment variables
 
 const elevenLabs = new ElevenLabs({
-    apiKey: elevenLabsApiKey
+    apiKey: elevenLabsApiKey})
 
     
 function trackPerformance(category, executionTime) {
